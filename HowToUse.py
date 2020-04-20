@@ -21,7 +21,7 @@ class FatherClass:
     def Callback(self, father, sqlReturn):
         value = ClassToGetData(
                     sqlReturn.getDataByName('example1'),
-                    sqlReturn.getDataByName('example2'),
+                    sqlReturn.getDataByName('example2')
                     )
         father.dataList.append(value)
 
