@@ -12,6 +12,7 @@ DATABASE = 'NAME_OF_DATABASE'
 USERNAME = 'USERNAME'
 PASSWORD = 'AN_SECURITY_PASSWORD'
 
+# something more beautiful
 class ClassToGetData:
     def __init__(self, example1, example2):
         self.example1       = example1   
@@ -38,3 +39,13 @@ fatherClass = FatherClass()
 
 for value in fatherClass.dataList:
     print(value.example1)
+
+
+# or something more simple
+sqlConn = SQL(SERVER,DATABASE,USERNAME,PASSWORD)
+sqlConn.RunQuery('exec s_some_proc')
+
+# if you want a query with parameters
+sqlConn = SQL(SERVER,DATABASE,USERNAME,PASSWORD)
+query = "exec s_some_proc "+ "'parameter'"
+sqlConn.RunQuery(query)
