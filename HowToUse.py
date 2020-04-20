@@ -26,12 +26,12 @@ class FatherClass:
         father.dataList.append(value)
 
     def LoadExample(self):
-        self.sqlConnection = SQL(SERVER,DATABASE,USERNAME,PASSWORD)
-        self.sqlConnection.father = self
         self.dataList = []
         self.sqlConnection.RunQuery('select example1, example2 from t_table', self.Callback)
 
     def __init__(self):
+        self.sqlConnection = SQL(SERVER,DATABASE,USERNAME,PASSWORD)
+        self.sqlConnection.father = self
         self.LoadExample()
 
 fatherClass = FatherClass()
