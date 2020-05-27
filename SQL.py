@@ -54,13 +54,14 @@ class SQL:
             self.rowData = []
             self.cursor.execute(query)
 
-            # get the cols and rows of the query
-            self.columns = [column[0] for column in self.cursor.description]
+            if (len(self.cursor.description) > 0):
+                # get the cols and rows of the query
+                self.columns = [column[0] for column in self.cursor.description]
             
-            self.rowData = list(self.cursor)
+                self.rowData = list(self.cursor)
 
-            # pass the values of the query
-            QueryResult = SQLReturn(self.columns, self.rowData, callback, self.father)
+                # pass the values of the query
+                QueryResult = SQLReturn(self.columns, self.rowData, callback, self.father)
             
             pass
         except:
