@@ -1,16 +1,13 @@
-# first use 'pip install pyodbc' at your terminal or cmd to download the library that i used
-# to connect with SQL Server
-
-# i did not created 'pyodbc', all rights reserved
-
-# now you need to import SQL or just copy the code, and just use it bro
-
 from SQL import SQL, SQLReturn
+from SQLAppendices import Table, Data
 
 SERVER = '99.999.999.99'
 DATABASE = 'NAME_OF_DATABASE'
 USERNAME = 'USERNAME'
 PASSWORD = 'AN_SECURITY_PASSWORD'
+
+sqlConn = SQL(SERVER,DATABASE,USERNAME,PASSWORD)
+
 
 # something more beautiful
 class ClassToGetData:
@@ -42,10 +39,25 @@ for value in fatherClass.dataList:
 
 
 # or something more simple
-sqlConn = SQL(SERVER,DATABASE,USERNAME,PASSWORD)
 sqlConn.RunQuery('exec s_some_proc')
+
 
 # if you want a query with parameters
 sqlConn = SQL(SERVER,DATABASE,USERNAME,PASSWORD)
-query = "exec s_some_proc "+ "'parameter'"
+query = "exec s_some_proc " + "'parameter'"
 sqlConn.RunQuery(query)
+
+
+# using tables
+fields = [
+    Table.Field('id', 'int', 'primary key', 'identity(1,1)'),
+    Table.Field('name', 'varchar(100)'),
+    Table.Field('description', 'varchar(100)')
+]
+table = Table('t_Test', fields, sqlConn)
+# table.setFields(fields)
+# table.setConnection(sqlConn)
+table.create()
+
+table.insertInto(Data.extractCSV('../index.csv'))
+table.deleteWhere('id', '1')

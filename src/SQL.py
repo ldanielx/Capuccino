@@ -1,5 +1,4 @@
 import pyodbc
-
 '''
     Author: Silvio Lacerda
     Last Update: 04/19/2020
@@ -53,19 +52,20 @@ class SQL:
         try:
             self.rowData = []
             self.cursor.execute(query)
+            self.SQLConnection.commit()
 
-            if (len(self.cursor.description) > 0):
-                # get the cols and rows of the query
-                self.columns = [column[0] for column in self.cursor.description]
-            
-                self.rowData = list(self.cursor)
+            if self.cursor.description is not None: 
+                if (len(self.cursor.description) > 0):
+                    # get the cols and rows of the query
+                    self.columns = [column[0] for column in self.cursor.description]
+                
+                    self.rowData = list(self.cursor)
 
-                # pass the values of the query
-                QueryResult = SQLReturn(self.columns, self.rowData, callback, self.father)
-            
+                    # pass the values of the query
+                    QueryResult = SQLReturn(self.columns, self.rowData, callback, self.father)
+                
+                    QueryResult.ReturnData()
             pass
         except:
             print('An error occurred in the query: "' + query + '"')
             pass
-
-        QueryResult.ReturnData()
