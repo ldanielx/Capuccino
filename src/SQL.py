@@ -1,11 +1,13 @@
 import pyodbc
-'''
+
+"""
     Author: Silvio Lacerda
     Last Update: 04/19/2020
-'''
+"""
+
 
 class SQLReturn:
-    def __init__(self, columns, rowData, callback, father = None):
+    def __init__(self, columns, rowData, callback, father=None):
         # initialize seting default values to manipulate
         self.rowCount = 0
         self.columns = columns
@@ -33,37 +35,59 @@ class SQLReturn:
                 index = idx
                 break
         if index == -1:
-            print('This field does not exist.')
+            print("This field does not exist.")
         else:
             return self.rowData[self.rowCount][index]
 
+
 class SQL:
-    def __init__(self, server, database, username, password, driver = '{ODBC Driver 17 for SQL Server}', father = None):
+    def __init__(
+        self,
+        server,
+        database,
+        username,
+        password,
+        driver="{ODBC Driver 17 for SQL Server}",
+        father=None,
+    ):
         self.server = server
         self.database = database
         self.username = username
         self.password = password
         self.driver = driver
-        self.SQLConnection = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password)
-        self.cursor = self.SQLConnection.cursor() 
-        self.father = father   
+        self.SQLConnection = pyodbc.connect(
+            "DRIVER="
+            + driver
+            + ";SERVER="
+            + server
+            + ";PORT=1433;DATABASE="
+            + database
+            + ";UID="
+            + username
+            + ";PWD="
+            + password
+        )
+        self.cursor = self.SQLConnection.cursor()
+        self.father = father
 
-    def RunQuery(self, query, callback = None):
+    def RunQuery(self, query, callback=None):
         try:
             self.rowData = []
             self.cursor.execute(query)
             self.SQLConnection.commit()
 
-            if self.cursor.description is not None: 
-                if (len(self.cursor.description) > 0):
+            if self.cursor.description is not None:
+                if len(self.cursor.description) > 0:
                     # get the cols and rows of the query
                     self.columns = [column[0] for column in self.cursor.description]
-                
+
                     self.rowData = list(self.cursor)
 
                     # pass the values of the query
-                    QueryResult = SQLReturn(self.columns, self.rowData, callback, self.father)
-                
+                    QueryResult = SQLReturn(
+                        self.columns, self.rowData, callback, self.father
+                    )
+
                     QueryResult.ReturnData()
             pass
         except:
